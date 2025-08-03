@@ -72,14 +72,14 @@ char *ht_set_entry(struct HashTable *table, char *key, int value)
     // AND hash with capacity-1 to ensure it's within entries array.
     size_t index = (size_t)(hash & (uint64_t)(capacity - 1));
 
-    //     // If length will exceed half of current capacity, expand it.
-    //     // if (table->length >= table->capacity / 2)
-    //     // {
-    //     //     if (!ht_expand(table))
-    //     //     {
-    //     //         return NULL;
-    //     //     }
-    //     // }
+    // If length will exceed half of current capacity, expand it.
+    // if (table->length >= table->capacity / 2)
+    // {
+    //     if (!ht_expand(table))
+    //     {
+    //         return NULL;
+    //     }
+    // }
 
     // Loop till we find an empty entry.
     while (entries[index].key != NULL)
