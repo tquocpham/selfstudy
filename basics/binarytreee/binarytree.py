@@ -63,11 +63,36 @@ def printll(n: LLNode):
         printll(n.next)
 
 
+def inorder_traversal_iterative(headnode: BinaryNode):
+    result = []
+    stack = []
+    current: BinaryNode = headnode
+
+    while current or stack:
+        # Traverse left subtree and push nodes onto the stack
+
+        while current:
+            stack.append(current)
+            current = current.left
+
+        # Pop a node, process it, and move to its right child
+        print([n.value for n in stack])
+        current = stack.pop()
+        result.append(current.value)
+        current = current.right
+
+    return result
+
+
 arr = [5, 6, 4, 7, 9, 10, 11, 15, 7, 45, 24, 5, 67]
 headnode = BinaryNode(12)
+
 for a in arr:
     # print(a)
     insert(headnode, a)
+
+print(inorder_traversal_iterative(headnode))
+
 # printtree(headnode)
 tracker = LLTracker()
 to_dbl_linked_list(headnode, tracker)
