@@ -54,20 +54,23 @@ from typing import List
 class Solution:
     def minCost(self, basket1: List[int], basket2: List[int]) -> int:
         # check that all counts sbetween the baskets are even.
-        # if odd, there's no way both basketss can have the same
+        # if odd, there's no way both baskets can have the same
         # number
         allcounts = {}
         for b in basket1:
             if b not in allcounts:
                 allcounts[b] = 0
             allcounts[b] += 1
+
         for b in basket2:
             if b not in allcounts:
                 allcounts[b] = 0
             allcounts[b] += 1
+
         for d, c, in allcounts.items():
             if c % 2 != 0:
                 return -1
+
         total_cost = 0
         while True:
             b1Count = self.count(basket1, allcounts.keys())
@@ -75,29 +78,31 @@ class Solution:
             if self.are_counts_equal(b1Count, b2Count):
                 break
 
-            # find largest deficet
-            max_def = 0
-            min_surp = None
+            # find largest deficit.
+            # since cost is the min() of a swap,
+            # we alway want to swap lowest surplus with highest deficit
+            max_deficit = 0
+            min_surplus = None
             print(basket1)
             print(basket2)
-            for d, c in b1Count.items():
-                b2c = 0
-                if d in b2Count:
-                    b2c = b2Count[d]
-                print(d, c, b2c, max_def, min_surp)
-                if b2c > c and d > max_def:
-                    max_def = d
-                if c > b2c:
-                    if min_surp is None:
-                        min_surp = d
-                    if d < min_surp:
-                        min_surp = d
-            print(max_def, min_surp)
-            cost = min(max_def, min_surp)
+            for d, b1count in b1Count.items():
+                b2count = b2Count[d]
+                print(
+                    f'd={d}, b1count={b1count}, b2count={b2count}, max_deficit={max_deficit}, min_surplus={min_surplus}')
+                if b2count > b1count and d > max_deficit:
+                    max_deficit = d
+                if b1count > b2count:
+                    if min_surplus is None:
+                        min_surplus = d
+                    if d < min_surplus:
+                        min_surplus = d
+            print(max_deficit, min_surplus)
+            cost = min(max_deficit, min_surplus)
             total_cost += cost
 
-            print(f'trading {max_def} for {min_surp} cost {cost}')
-            self.trade(max_def, min_surp, basket1, basket2)
+            print(f'trading {max_deficit} for {min_surplus} cost {cost}')
+            self.trade(max_deficit, min_surplus, basket1, basket2)
+        return total_cost
 
     def count(self, basket, digits):
         counts = {d: 0 for d in digits}
