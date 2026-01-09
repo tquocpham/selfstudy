@@ -1,14 +1,16 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
-// // Global variable declarations (if necessary, often better to avoid)
-// extern int global_variable;
+// The FNV_offset_basis is the 64-bit value: 14695981039346656037 (in hex, 0xcbf29ce484222325).
+// The FNV_prime is the 64-bit value 1099511628211 (in hex, 0x100000001b3)..
+#define FNV_OFFSET 14695981039346656037UL
+#define FNV_PRIME 1099511628211UL
 
 // Struct and typedef declarations
 struct HashTableEntry
 {
     char *key;
-    int value;
+    void *value;
 };
 typedef struct HashTableEntry HashTableEntry;
 
@@ -24,9 +26,12 @@ typedef struct HashTable HashTable;
 
 // Function declarations
 HashTable *ht_create();
-unsigned long hash_function(char *str);
 void ht_destroy(HashTable *table);
-char *ht_set_entry(HashTable *table, char *key, int value);
+// unsigned long hash_function(char *str);
+uint64_t hash_function(const char *str);
+static const char *ht_set_entry(HashTableEntry *entries, size_t capacity, const char *key, void *value, size_t *plength);
+void *ht_get(HashTable *table, const char *key);
+const char *ht_set(HashTable *table, const char *key, void *value);
 void print_htentry(HashTableEntry entry);
 void print_ht(HashTable *table);
 
