@@ -216,7 +216,6 @@ void *ht_get(HashTable *table, const char *key)
     // Loop till we find an empty entry.
     while (table->entries[index].key != NULL)
     {
-        printf("here");
         char *k = table->entries[index].key;
         printf("k: %s\n", k);
         if (strcmp(key, table->entries[index].key) == 0)
